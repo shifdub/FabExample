@@ -18,6 +18,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+
   private void addListItem(){
     SimpleDateFormat dateformat =
         new SimpleDateFormat("HH:mm:ss MM/dd/yyyy",
@@ -52,13 +53,23 @@ public class MainActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        addListItem();
         Snackbar.make(view, "Item added to list", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+            .setAction("Undo", undoOnClickListener).show();
       }
     });
   }
+  View.OnClickListener undoOnClickListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      listItems.remove(listItems.size() - 1);
+      adapter.notifyDataSetChanged();
+      Snackbar.make(view, "Item removed", Snackbar.LENGTH_LONG)
+          .setAction("Action", null).show();
+    }
+  };
 
-  @Override
+    @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_main, menu);
